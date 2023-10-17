@@ -7,38 +7,72 @@
     <title>Phone Directory</title>
 </head>
 <body>
+    <header>
+        <h1>Phone Directory</h1>
+    </header>
+
     <!-- contact  -->
     <!-- 3 FIELD NAMES -->
     <!-- name, mobile, email -->
     <!-- after valid contact added fields should reset -->
+    <div id="form-container">
+        <form id="contact-form">
+            <input type="text" id="contact-name" placeholder="Contact Name"><br>
+            <input type="tel" id="contact-mobile" placeholder="Mobile Number"><br>
+            <input type="email" id="contact-email" placeholder="Email"><br>
+            <!-- add contacts to the table if passes validation -->
+            <input type="submit" value="Add Contact">
+        </form>
+    </div>
 
     <!-- VALIDATION -->
     <!-- Name   : only alphabet and space. name <= 20 chars -->
     <!-- Mobile : only numbers. mobile == 10 chars -->
     <!-- Email  : proper validation. email < 40 -->
 
-    <!-- <div id="error"></div> -->
+    <div id="error">incorrect input</div>
     <!-- if any input format error or empty field -->
 
     <!-- valid contacts added sequentially to table -->
-
-    <!-- <button>Add Contact</button> -->
-    <!-- add contacts to the table if passes validation -->
 
     <!-- -------------------------------------------------- -->
     
     <!-- SEARCH BOX : search by mobile number -->
     <!-- search begins immediately (when 1 digit is typed) -->
     <!-- filter rows based on search input -->
+    <div id="search-container">
+        <input type="search" id="contact-search">
+    </div>
 
     <!-- IF NO matching row -->
-    <!-- <div id="noResult"></div> made visible, hidden otherwise -->
+    <div id="noResult">no matching row for search term</div>
+    <!-- made visible, hidden otherwise -->
     
     <!-- -------------------------------------------------- -->
 
     <!-- contact summary table -->
     <!-- 3 COLS : name \ mobile \ email -->
     <!-- odd numbered rows : backgroundcolor: #f2f2f2 -->
+    <div id="table-container">
+        <h2>Contacts Summary</h2>
+        <table id="contact-table">
+            <tr>
+                <th>Name</th>
+                <th>Mobile</th>
+                <th>Email</th>
+            </tr>
+            <tr>
+                <td>matthew</td>
+                <td>0838012334</td>
+                <td>matthewtweedy02@gmail.com</td>
+            </tr>
+            <tr>
+                <td>matthew</td>
+                <td>0838012334</td>
+                <td>matthewtweedy02@gmail.com</td>
+            </tr>
+        </table>
+    </div>
 
     <!-- clicking name heading col SORTS BY ASC of contact name -->
     <!-- further clicks flip the state from DESC to ASC and back -->
