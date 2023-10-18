@@ -49,12 +49,13 @@ div {
     margin-right: auto;
 }
 
-#contact-table th {
+#table-th-Name {
     background-color: #ffffff;
     cursor: pointer;
+    user-select: none;
 }
 
-#contact-table th:hover {
+#table-th-Name:hover {
     background-color: #d2f8ff;
 }
 
