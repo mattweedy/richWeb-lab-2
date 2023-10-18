@@ -1,4 +1,4 @@
-// ------------------ validate()
+// ------------------ validateForm()
 // check all validation asked for
 // if fails any, reveal the 'error' div
 // if all passes, call addContact()

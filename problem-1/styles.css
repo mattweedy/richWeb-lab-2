@@ -3,16 +3,73 @@
     justify-content: center;
 }
 
-table, td, th{
-    border: 1px solid black;
-    margin-left: auto;
-    margin-right: auto;
+div {
+    margin-bottom: 10px;
+}
+
+#form-container {
+    margin: 10px;
+    background-color: #94f6ff;
+    padding: 36px;
+    border: 3px solid #3e75ff;
+    border-radius: 24px;
+}
+
+#contact-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+#contact-form input {
+    text-align: left;
+    padding: 4px;
+}
+
+#search-container {
+    padding: 16px;
+}
+
+#search-container label {
+    font-weight: bold;
+}
+
+#contact-search {
+    text-align: left;
+    height: 24px;
+}
+
+#contact-table {
     border-collapse: collapse;
     min-width: 75%;
     max-width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#contact-table th {
+    background-color: #ffffff;
+    cursor: pointer;
+}
+
+#contact-table th:hover {
+    background-color: #d2f8ff;
+}
+
+#contact-table td, #contact-table th {
+    border: 1px solid black;
+}
+
+tr {
+    height: 36px;
 }
 
 tr:nth-child(odd) {
     background-color: #f2f2f2;
 }
 
+#error, #noResult {
+    color: #ff0000;
+}
