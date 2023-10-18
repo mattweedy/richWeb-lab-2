@@ -10,7 +10,6 @@ const contactEmail = document.getElementById("contact-email");
 let contacts = [];
 
 // listener
-// contactForm.addEventListener("submit", addContact);
 contactAddButton.addEventListener("click", addContact);
 
 function addContact() {
@@ -18,10 +17,13 @@ function addContact() {
     const cname = contactName.value;
     const mobile = contactMobile.value;
     const email = contactEmail.value;
-    
+
     if (cname.trim() !== "" &&
         mobile.trim() !== "" &&
-        email.trim() !== ""
+        email.trim() !== "" &&
+        cname.match(/^[A-Za-z ]{1,20}$/) &&
+        /^\d{10}$/.test(mobile) &&
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
     ) {
         // set error and noResult to invisible
         error.style.display = "none";
@@ -38,8 +40,8 @@ function addContact() {
     } else {
         // if fails any, reveal the 'error' div
         error.style.display = "block";
-        noResult.style.display = "block";
     }
+
 
     // GRAB THE TEXT AND ADD A NEW ROW, CAN FULLY VAlidate after
     const contactTable = document.getElementById("contact-table");
