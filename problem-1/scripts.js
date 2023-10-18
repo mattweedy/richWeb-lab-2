@@ -85,9 +85,9 @@ contactSearch.addEventListener("input", function () {
     if (mobileSearch.trim() === "") { searchResults = [] };
 
     if (searchResults.length === 0) {
-      document.getElementById("noResult").style.display = "block";
+        document.getElementById("noResult").style.display = "block";
     } else {
-      document.getElementById("noResult").style.display = "none";
+        document.getElementById("noResult").style.display = "none";
     }
 
     createTable();
