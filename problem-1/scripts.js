@@ -7,8 +7,11 @@ const contactName = document.getElementById("contact-name");
 const contactMobile = document.getElementById("contact-mobile");
 const contactEmail = document.getElementById("contact-email");
 const tableNameSort = document.getElementById("table-th-Name");
+const contactSearch = document.getElementById("contact-search");
 
+// variables
 let contacts = [];
+let searchResults = [];
 let asc = true;
 
 // listener
@@ -28,7 +31,6 @@ function addContact() {
     ) {
         // set error and noResult to invisible
         error.style.display = "none";
-        noResult.style.display = "none";
     
         // if all passes, add them to contacts[]
         const contact = {cname, mobile, email};
@@ -44,7 +46,7 @@ function addContact() {
         // if fails any, reveal the 'error' div
         error.style.display = "block";
     }
-}
+};
 
 function createTable() {
     const contactTable = document.getElementById("contact-table");
@@ -52,33 +54,46 @@ function createTable() {
 
     contactsTBody.innerHTML = "";
 
-    // contacts.sort((a, b) => (asc < 1 ? -1 : 1))
+    // sort the contact list based on the value of asc
     contacts.sort((a, b) => (asc ? a.cname.localeCompare(b.cname) : b.cname.localeCompare(a.cname)));
 
-    for (let i = 0; i < contacts.length; i++) {
+    // use searchResults if it isn't empty, otherwise full contacts list
+    const shownContacts = searchResults.length > 0 ? searchResults : contacts;
+
+    // go through contact list
+    for (let i = 0; i < shownContacts.length; i++) {
+        // add a row
         const row = contactsTBody.insertRow(-1);
         
+        // add the three cells to the row
         const rowName = row.insertCell(0);
         const rowMobile = row.insertCell(1);
         const rowEmail = row.insertCell(2);
   
-        rowName.innerHTML = contacts[i].cname;
-        rowMobile.innerHTML = contacts[i].mobile;
-        rowEmail.innerHTML = contacts[i].email;
+        // set the text to the relevant data
+        rowName.innerHTML = shownContacts[i].cname;
+        rowMobile.innerHTML = shownContacts[i].mobile;
+        rowEmail.innerHTML = shownContacts[i].email;
       }
-}
+};
+
+contactSearch.addEventListener("input", function () {
+    const mobileSearch = this.value.trim();
+
+    searchResults = contacts.filter((contact) => contact.mobile.includes(mobileSearch));
+
+    if (mobileSearch.trim() === "") { searchResults = [] };
+
+    if (searchResults.length === 0) {
+      document.getElementById("noResult").style.display = "block";
+    } else {
+      document.getElementById("noResult").style.display = "none";
+    }
+
+    createTable();
+});
 
 tableNameSort.addEventListener("click", function () {
-
     asc = !asc; // reverse the order aka asc -> desc -> asc
     createTable();
-})
-
-// filter()
-// figure this one out
-// when name is clicked it will first go by asc, followed by desc
-
-// searchMobile()
-// have it find each char input and add it to a string
-// continuously be looking for matches in list
-// if none, reveal 'noResult' div
+});

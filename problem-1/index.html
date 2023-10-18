@@ -11,40 +11,21 @@
         <h1>Phone Directory</h1>
     </header>
 
-    <!-- after valid contact added fields should reset -->
     <div id="form-container">
         <input type="text" id="contact-name" placeholder="Contact Name" maxlength="20"><br>
         <input type="text" id="contact-mobile" placeholder="Mobile Number" minlength="10" maxlength="10"><br>
         <input type="text" id="contact-email" placeholder="Email" maxlength="39"><br><br>
-        <!-- add contacts to the table if passes validation -->
         <button id="contact-add">Add Contact</button>
     </div>
 
-    <!-- VALIDATION -->
-    <!-- Name   : only alphabet and space. name <= 20 chars -->
-    <!-- Mobile : only numbers. mobile == 10 chars -->
-    <!-- Email  : proper validation. email < 40 -->
-
     <div id="error">incorrect input</div>
-    <!-- if any input format error or empty field -->
 
-    <!-- valid contacts added sequentially to table -->
-
-    <!-- -------------------------------------------------- -->
-    
-    <!-- SEARCH BOX : search by mobile number -->
-    <!-- search begins immediately (when 1 digit is typed) -->
-    <!-- filter rows based on search input -->
     <div id="search-container">
         <label for="contact-search">Search contact by Mobile No:</label>
-        <input type="search" id="contact-search">
+        <input type="text" id="contact-search">
     </div>
 
-    <!-- IF NO matching row -->
     <div id="noResult">no matching row for search term</div>
-    <!-- made visible, hidden otherwise -->
-    
-    <!-- -------------------------------------------------- -->
 
     <div id="table-container">
         <h2>Contacts Summary</h2>
@@ -60,9 +41,6 @@
             </tbody>
         </table>
     </div>
-
-    <!-- clicking name heading col SORTS BY ASC of contact name -->
-    <!-- further clicks flip the state from DESC to ASC and back -->
 
     <script src="scripts.js"></script>
 </body>
