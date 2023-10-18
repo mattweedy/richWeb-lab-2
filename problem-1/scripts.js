@@ -1,50 +1,62 @@
 // dom elements
+const contactForm = document.getElementById("contact-form")
 const contactAddButton = document.getElementById("contact-add");
 const error = document.getElementById("error");
 const noResult = document.getElementById("noResult");
+const contactName = document.getElementById("contact-name");
+const contactMobile = document.getElementById("contact-mobile");
+const contactEmail = document.getElementById("contact-email");
 
 let contacts = [];
 
-// set error and noResult to invisible
-error.style.display = "none";
-noResult.style.display = "none";
-
 // listener
-contactAddButton.addEventListener("click", validateForm);
+// contactForm.addEventListener("submit", addContact);
+contactAddButton.addEventListener("click", addContact);
 
-function validateForm() {
-    // get the form inputs
-    // console.log("test");
+function addContact() {
 
-    const name = document.getElementById("contact-name").value;
-    const mobile = document.getElementById("contact-mobile").value;
-    const email = document.getElementById("contact-email").value;
-
-    if (
-        name.trim() !== "" &&
+    const cname = contactName.value;
+    const mobile = contactMobile.value;
+    const email = contactEmail.value;
+    
+    if (cname.trim() !== "" &&
         mobile.trim() !== "" &&
         email.trim() !== ""
     ) {
-        console.log(name)
-        console.log(mobile)
-        console.log(email)
+        // set error and noResult to invisible
+        error.style.display = "none";
+        noResult.style.display = "none";
+    
+        // if all passes, add them to contacts[]
+        const contact = {cname, mobile, email};
+        contacts.push(contact);
+    
+        // clear input fields
+        contactName.value = "";
+        contactMobile.value = "";
+        contactEmail.value = "";
     } else {
+        // if fails any, reveal the 'error' div
         error.style.display = "block";
         noResult.style.display = "block";
     }
 
-    // name.match(/^[A-Za-z ]{1,20}$/)
-    addContact(name, mobile, email);
-
-}
-// check all validation asked for
-// if fails any, reveal the 'error' div
-// if all passes, call addContact()
-
-function addContact(name, mobile, email) {
     // GRAB THE TEXT AND ADD A NEW ROW, CAN FULLY VAlidate after
     const contactTable = document.getElementById("contact-table");
     const constTBody = contactTable.querySelector("tbody");
+
+    for (let i = 0; i < contacts.length; i++) {
+        const row = constTBody.insertRow(-1);
+        
+        const rowName = row.insertCell(0);
+        const rowMobile = row.insertCell(1);
+        const rowEmail = row.insertCell(2);
+  
+        rowName.innerHTML = contacts[i].cname;
+        rowMobile.innerHTML = contacts[i].mobile;
+        rowEmail.innerHTML = contacts[i].email;
+      }
+
 }
 // find the element for the contact list
 // create new element with the stored and cleaned input

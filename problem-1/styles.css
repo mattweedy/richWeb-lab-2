@@ -13,9 +13,6 @@ div {
     padding: 36px;
     border: 3px solid #3e75ff;
     border-radius: 24px;
-}
-
-#contact-form {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -23,7 +20,7 @@ div {
     flex-direction: row;
 }
 
-#contact-form input {
+#form-container input {
     text-align: left;
     padding: 4px;
 }
@@ -47,6 +44,10 @@ div {
     max-width: 75%;
     margin-left: auto;
     margin-right: auto;
+}
+
+th {
+    background-color: #ffffff;
 }
 
 #table-th-Name {
@@ -73,4 +74,5 @@ tr:nth-child(odd) {
 
 #error, #noResult {
     color: #ff0000;
+    display: none;
 }

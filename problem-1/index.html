@@ -13,13 +13,11 @@
 
     <!-- after valid contact added fields should reset -->
     <div id="form-container">
-        <form id="contact-form" name="contactForm"  method="post"> <!-- onsubmit="return validateForm()" maybe needed idk -->
-            <input type="text" id="contact-name" placeholder="Contact Name" maxlength="20"><br>
-            <input type="tel" id="contact-mobile" placeholder="Mobile Number" minlength="10" maxlength="10"><br>
-            <input type="email" id="contact-email" placeholder="Email" maxlength="39"><br><br>
-            <!-- add contacts to the table if passes validation -->
-            <input type="submit" value="Add Contact" id="contact-add">
-        </form>
+        <input type="text" id="contact-name" placeholder="Contact Name" maxlength="20"><br>
+        <input type="text" id="contact-mobile" placeholder="Mobile Number" minlength="10" maxlength="10"><br>
+        <input type="text" id="contact-email" placeholder="Email" maxlength="39"><br><br>
+        <!-- add contacts to the table if passes validation -->
+        <button id="contact-add">Add Contact</button>
     </div>
 
     <!-- VALIDATION -->
@@ -59,16 +57,6 @@
                 </tr>    
             </thead>
             <tbody>
-                <tr>
-                    <td>matthew</td>
-                    <td>0838012334</td>
-                    <td>matthewtweedy02@gmail.com</td>
-                </tr>
-                <tr>
-                    <td>matthew</td>
-                    <td>0838012334</td>
-                    <td>matthewtweedy02@gmail.com</td>
-                </tr>
             </tbody>
         </table>
     </div>
