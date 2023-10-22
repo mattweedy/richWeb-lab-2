@@ -2,7 +2,9 @@ const userSearch = document.getElementById("user-search-bar");
 const userSearchButton = document.getElementById("user-search-button");
 const userProfile = document.getElementById("user-profile")
 const url = 'https://api.github.com/users/mattweedy';
+// const url = 'https://api.github.com/users/'; append the input onto end of string
 const gists_url = 'https://api.github.com/users/mattweedy/gists';
+// const gists_url = 'https://api.github.com/users/';
 
 let userNumGists = ""
 
