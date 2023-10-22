@@ -2,3 +2,7 @@
     so that when we add them via js
     and assign them the class
     they are all formatted the same  */
+
+    .user-profile {
+        background-color: beige;
+    }

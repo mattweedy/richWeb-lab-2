@@ -2,13 +2,16 @@ const userSearch = document.getElementById("user-search-bar");
 const userSearchButton = document.getElementById("user-search-button");
 const userProfile = document.getElementById("user-profile")
 const url = 'https://api.github.com/users/mattweedy';
+const gists_url = 'https://api.github.com/users/mattweedy/gists';
+
+let userNumGists = ""
 
 // function to get get specified user profile from Github API
-async function fetchUser() {
+async function fetchData(url_to_fetch) {
     try { // try HTTP GET request from Github API
-        const response = await fetch(url);
+        const response = await fetch(url_to_fetch);
         if (!response.ok) { // if the response isn't good (200) throw error
-            throw new Error(`HTTP Error. Status : ${response.status}"`);
+            throw new Error(`HTTP Error while attempting to request from : ${url_to_fetch}\n Status : ${response.status}"`);
         } else { // otherwise return the data in json
             return response.json();
         }
@@ -18,28 +21,20 @@ async function fetchUser() {
 }
 
 // create listener for when search button is pressed
-userSearchButton.addEventListener("click", displayUser);
+userSearchButton.addEventListener("click", fetchData);
 
-fetchUser()
-    .then(user => {
-        // creating a <p> tag element to display the relevant data
-        const allUserDetails = document.createElement("p");
-        allUserDetails.innerHTML = `pfp : ${userDetails[0]}<br>name : ${userDetails[1]}<br>login : ${userDetails[2]}<br>email : ${userDetails[3]}<br>location : ${userDetails[4]}`;
-
-        userProfile.appendChild(allUserDetails);
-        console.log(user);
+// get the number of user gists
+fetchData(gists_url)
+    .then(gists => {
+        userNumGists = gists.length;
     })
 
-// goal of displayUser : divide up information from fetched user and create HTML elements to hold data
-//                       & append them to the existing <div id="user-profile">
-//
-//                      to create :
-//                      - a div containing an image with src=user.avatar_url
-//                      - <p> with <h3>Name</h3> and <p> with user.name 
-//                      - <p> with <h3>Username</h3> and <p> with user.username 
-//                      - <p> with <h3>Email</h3> and <p> with user.email
-//                      - <p> with <h3>Location</h3> and <p> with user.location
-//                      - <p> with <h3>Number of Gists</h3> and <p> with calculated number of gists based on user.gists_url.length() 
+fetchData(url)
+    .then(user => {
+        displayUser(user);
+    })
+
+// divide up information from fetched user and create HTML elements to hold data
 function displayUser(user) {
     // clear existing user data
     userProfile.innerHTML = "";
@@ -49,26 +44,42 @@ function displayUser(user) {
     userAvatar.src = user.avatar_url;
     userProfile.appendChild(userAvatar);
 
-    // grab number of gists
-    const userNumGists = calculateNumGists(user)l
-
     // list of user details we want
-    const puserDetails = [user.avatar_url, user.name, user.login, user.email, user.location, userNumGists];
-
     const userDetails = [
         { label: "Name", value: user.name },
-        { label: "Username", value: user.username },
+        { label: "Username", value: user.login },
         { label: "Email", value: user.email },
-        { label: "Location", value: user.location }
+        { label: "Location", value: user.location },
+        { label: "Number of Gists", value: userNumGists }
     ];
 
     // create the user detail elements
     userDetails.forEach((detail) => {
+        // create a <div>, <h3> and <p> tag for each user detail
         const userDetailContainer = document.createElement("div");
-    })
+        const userDetailLabel = document.createElement("h3");
+        const userDetailValue = document.createElement("p");
 
+        // set the container's class
+        userProfile.className = "user-profile"
+
+        // set the text to the user data
+        userDetailLabel.innerText = detail.label;
+        userDetailValue.innerText = detail.value;
+        
+        // if any info is empty display as null
+        if (userDetailValue.innerText === "") { 
+            userDetailValue.innerText = "null or private";
+            userDetailValue.style.color = "red";
+        }
+
+        // append the html elements to the container
+        userDetailContainer.appendChild(userDetailLabel);
+        userDetailContainer.appendChild(userDetailValue);
+
+        // append the container to the userProfile div
+        userProfile.appendChild(userDetailContainer);
+    });
 }
 
-function calculateNumGists(user) {
-    return user.gists_url.length();
-}
+// TODO: need to implement CSS, search bar functionality, repos section
