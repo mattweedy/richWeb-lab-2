@@ -11,16 +11,24 @@
         <h1>Github Profile Searcher</h1>
     </header>
 
-    <div>
-        <input type="text" id="user-search-bar"><br>
+    <div id="search-container">
+        <input type="text" id="user-search-bar" placeholder="username"><br>
         <button id="user-search-button">Search</button>
     </div>
 
     <div id="profile-container">
-        <div id="user-profile">
+        <div id="user-container">
+            <h1>User Profile</h1>
+            <div id="user-profile"></div>
         </div>
-
-        <div id="user-repos"></div>
+        
+        <div id="repos-container">
+            <h1>User Repos</h1>
+            <div id="user-repos">
+                <h3>Test Title</h3>
+                <p>Test text</p>
+            </div>
+        </div>
     </div>
 
     <script src="scripts.js"></script>

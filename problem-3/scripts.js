@@ -1,10 +1,10 @@
 const userSearch = document.getElementById("user-search-bar");
 const userSearchButton = document.getElementById("user-search-button");
 const userProfile = document.getElementById("user-profile")
-const url = 'https://api.github.com/users/mattweedy';
-// const url = 'https://api.github.com/users/'; append the input onto end of string
-const gists_url = 'https://api.github.com/users/mattweedy/gists';
-// const gists_url = 'https://api.github.com/users/';
+// const url = 'https://api.github.com/users/mattweedy';
+const url = 'https://api.github.com/users/'; //append the input onto end of string
+// const gists_url = 'https://api.github.com/users/mattweedy/gists';
+const gists_url = 'https://api.github.com/users/';
 
 let userNumGists = ""
 
@@ -23,10 +23,25 @@ async function fetchData(url_to_fetch) {
 }
 
 // create listener for when search button is pressed
-userSearchButton.addEventListener("click", fetchData);
+userSearchButton.addEventListener("click", function() {
+    const searchUser = userSearch.innerHTML;
+    searchUser.trim();
+
+    // add the user
+    gists_url.concat("", searchUser);
+    url.concat("", searchUser);
+
+    // gists_url = gists_url + searchUser + "/gists";
+    // url = url + searchUser;
+
+    console.log(gists_url)
+    console.log(url)
+    // fetchData(gists_url);
+    // fetchData(url);
+});
 
 // get the number of user gists
-fetchData(gists_url)
+/* fetchData(gists_url)
     .then(gists => {
         userNumGists = gists.length;
     })
@@ -35,16 +50,21 @@ fetchData(url)
     .then(user => {
         displayUser(user);
     })
-
+ */
 // divide up information from fetched user and create HTML elements to hold data
 function displayUser(user) {
     // clear existing user data
     userProfile.innerHTML = "";
 
     // create image element for user's pfp
+    const userAvatarContainer = document.createElement("section");
     const userAvatar = document.createElement("img");
+
     userAvatar.src = user.avatar_url;
-    userProfile.appendChild(userAvatar);
+    userAvatarContainer.id = "avatar-container"
+
+    userAvatarContainer.appendChild(userAvatar);
+    userProfile.appendChild(userAvatarContainer);
 
     // list of user details we want
     const userDetails = [
@@ -63,7 +83,7 @@ function displayUser(user) {
         const userDetailValue = document.createElement("p");
 
         // set the container's class
-        userProfile.className = "user-profile"
+        userProfile.className = "user-profile";
 
         // set the text to the user data
         userDetailLabel.innerText = detail.label;
