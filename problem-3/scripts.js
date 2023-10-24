@@ -1,10 +1,7 @@
 const userSearch = document.getElementById("user-search-bar");
 const userSearchButton = document.getElementById("user-search-button");
-const userProfile = document.getElementById("user-profile")
-// const url = 'https://api.github.com/users/mattweedy';
-const url = 'https://api.github.com/users/'; //append the input onto end of string
-// const gists_url = 'https://api.github.com/users/mattweedy/gists';
-const gists_url = 'https://api.github.com/users/';
+const userProfile = document.getElementById("user-profile");
+const baseUrl = 'https://api.github.com/users/'; //append the input onto end of string
 
 let userNumGists = ""
 
@@ -13,7 +10,12 @@ async function fetchData(url_to_fetch) {
     try { // try HTTP GET request from Github API
         const response = await fetch(url_to_fetch);
         if (!response.ok) { // if the response isn't good (200) throw error
-            throw new Error(`HTTP Error while attempting to request from : ${url_to_fetch}\n Status : ${response.status}"`);
+            if (response.status === 404) {
+                userProfile.append(document.createElement("div").innerHTML = "Specified Github user not found");
+                throw new Error("User not found");
+            } else {
+                throw new Error(`HTTP Error while attempting to request from : ${url_to_fetch}\n Status : ${response.status}"`);
+            }
         } else { // otherwise return the data in json
             return response.json();
         }
@@ -23,34 +25,27 @@ async function fetchData(url_to_fetch) {
 }
 
 // create listener for when search button is pressed
-userSearchButton.addEventListener("click", function() {
-    const searchUser = userSearch.innerHTML;
-    searchUser.trim();
+userSearchButton.addEventListener("click", async function() {
+    const searchUser = userSearch.value.trim();
+    
+    // create user and user's gists url
+    const userUrl = `${baseUrl}${searchUser}`;
+    const gistsUrl = `${baseUrl}${searchUser}/gists`;
 
-    // add the user
-    gists_url.concat("", searchUser);
-    url.concat("", searchUser);
-
-    // gists_url = gists_url + searchUser + "/gists";
-    // url = url + searchUser;
-
-    console.log(gists_url)
-    console.log(url)
-    // fetchData(gists_url);
-    // fetchData(url);
+    try {
+        const userData = await fetchData(userUrl);
+        const userGists = await fetchData(gistsUrl);
+        userNumGists = userGists.length;
+        displayUser(userData);
+    } catch (error) {
+        if (error.message === "User not found") {
+            console.info("ERROR: Specified Github user not found");
+        } else {
+            console.error(error);
+        }
+    }
 });
 
-// get the number of user gists
-/* fetchData(gists_url)
-    .then(gists => {
-        userNumGists = gists.length;
-    })
-
-fetchData(url)
-    .then(user => {
-        displayUser(user);
-    })
- */
 // divide up information from fetched user and create HTML elements to hold data
 function displayUser(user) {
     // clear existing user data
@@ -103,5 +98,3 @@ function displayUser(user) {
         userProfile.appendChild(userDetailContainer);
     });
 }
-
-// TODO: need to implement CSS, search bar functionality, repos section
