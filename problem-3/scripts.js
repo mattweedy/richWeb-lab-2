@@ -6,7 +6,7 @@ const userSearchButton = document.getElementById("user-search-button");
 const errorMsg = document.getElementById("error");
 const baseUrl = 'https://api.github.com/users/'; //append the input onto end of string
 
-let userNumGists = ""
+let userNumGists = "";
 
 // function to get get specified user profile from Github API
 async function fetchData(url_to_fetch) {
@@ -30,7 +30,14 @@ async function fetchData(url_to_fetch) {
 
 // create listener for when search button is pressed
 userSearchButton.addEventListener("click", async function() {
+    userProfile.innerHTML = "";
+    userRepos.innerHTML = "";
     const searchUser = userSearch.value.trim();
+
+    if (searchUser === "") {
+        return;
+    }
+
     // flag for making sure error div isnt created twice upon one fetch failing
     let userNotFound = false;
     
@@ -109,48 +116,49 @@ function displayUser(user) {
         userDetailContainer.appendChild(userDetailLabel);
         userDetailContainer.appendChild(userDetailValue);
 
-        // append the container to the userProfile div
+        // append the container to the <user-profile> div
         userProfile.appendChild(userDetailContainer);
     });
 }
 
+// divide up repo information and create divs for their info
 function displayRepos(repos) {
+    // clear previous repos if 
     userRepos.innerHTML = "";
     
+    // display a message if no repos
     if (repos.length === 0) {
         errorMsg.textContent = "No repositories available";
         userRepos.style.display = "none"; // Hide the user-repos container
         return;
     }
 
+    // for every repo returned in json data
     for (const repo of repos) {
+            // create a <div> with <h3 and <p>
             const userRepoContainer = document.createElement("div");
             const userRepoLabel = document.createElement("h3");
             const userRepoValue = document.createElement("p");
 
+            // adding styles
             userRepoContainer.style.minHeight = "56px";
-    
+            userRepoValue.style.paddingBottom = "6px";
             userRepos.className = "user-profile";
-    
+
+            // inserting data into repo div
             userRepoLabel.innerHTML = repo.name;
             userRepoValue.innerHTML = `${repo.description || 'No description available'}`;
     
+            // append relevant <div>s to the <user-repos>
             userRepoContainer.appendChild(userRepoLabel);
             userRepoContainer.appendChild(userRepoValue);
             userRepos.appendChild(userRepoContainer);
     }
 
+    // if more than 5 repos from profile, make list scrollable
     if (repos.length > 5 ) {
         userRepos.style.maxHeight = "566px";
     } else {
         userRepos.style.maxHeight = "none";
     }
 }
-
-// TODO: make current user profile disappear if new searched user doesn't exist and error is displayed
-//       make the list of repos equally fill the height of the profile-container/repos-container
-//       make the repo list scrollable if there are more than 5
-//       make error message for no repos available similar to user not found error
-
-// TEST IF ALL WORKING
-// #user-repos test flex: 1
