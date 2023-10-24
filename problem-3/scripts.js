@@ -1,6 +1,9 @@
+const userContainer = document.getElementById("user-container");
+const userProfile = document.getElementById("user-profile");
+const userRepos = document.getElementById("user-repos");
 const userSearch = document.getElementById("user-search-bar");
 const userSearchButton = document.getElementById("user-search-button");
-const userProfile = document.getElementById("user-profile");
+const errorMsg = document.getElementById("error");
 const baseUrl = 'https://api.github.com/users/'; //append the input onto end of string
 
 let userNumGists = ""
@@ -9,9 +12,10 @@ let userNumGists = ""
 async function fetchData(url_to_fetch) {
     try { // try HTTP GET request from Github API
         const response = await fetch(url_to_fetch);
-        if (!response.ok) { // if the response isn't good (200) throw error
+        
+        if (!response.ok) { // if the response isn't good throw error
             if (response.status === 404) {
-                userProfile.append(document.createElement("div").innerHTML = "Specified Github user not found");
+                errorMsg.textContent = "Specified Github user not found";
                 throw new Error("User not found");
             } else {
                 throw new Error(`HTTP Error while attempting to request from : ${url_to_fetch}\n Status : ${response.status}"`);
@@ -27,20 +31,28 @@ async function fetchData(url_to_fetch) {
 // create listener for when search button is pressed
 userSearchButton.addEventListener("click", async function() {
     const searchUser = userSearch.value.trim();
+    // flag for making sure error div isnt created twice upon one fetch failing
+    let userNotFound = false;
     
     // create user and user's gists url
     const userUrl = `${baseUrl}${searchUser}`;
     const gistsUrl = `${baseUrl}${searchUser}/gists`;
+    const reposUrl = `${baseUrl}${searchUser}/repos`;
 
     try {
         const userData = await fetchData(userUrl);
         const userGists = await fetchData(gistsUrl);
+        const userReposData = await fetchData(reposUrl);
         userNumGists = userGists.length;
         displayUser(userData);
+        displayRepos(userReposData);
     } catch (error) {
-        if (error.message === "User not found") {
-            console.info("ERROR: Specified Github user not found");
+        if (error.message === "User not found" && !userNotFound) {
+            userProfile.style.display = "none";
+            userProfile.innerHTML = "";
+            userNotFound = true;
         } else {
+            userProfile.style.display = "block";
             console.error(error);
         }
     }
@@ -50,6 +62,7 @@ userSearchButton.addEventListener("click", async function() {
 function displayUser(user) {
     // clear existing user data
     userProfile.innerHTML = "";
+    errorMsg.textContent = "";
 
     // create image element for user's pfp
     const userAvatarContainer = document.createElement("section");
@@ -77,6 +90,8 @@ function displayUser(user) {
         const userDetailLabel = document.createElement("h3");
         const userDetailValue = document.createElement("p");
 
+        userDetailContainer.style.height = "56px";
+
         // set the container's class
         userProfile.className = "user-profile";
 
@@ -98,3 +113,44 @@ function displayUser(user) {
         userProfile.appendChild(userDetailContainer);
     });
 }
+
+function displayRepos(repos) {
+    userRepos.innerHTML = "";
+    
+    if (repos.length === 0) {
+        errorMsg.textContent = "No repositories available";
+        userRepos.style.display = "none"; // Hide the user-repos container
+        return;
+    }
+
+    for (const repo of repos) {
+            const userRepoContainer = document.createElement("div");
+            const userRepoLabel = document.createElement("h3");
+            const userRepoValue = document.createElement("p");
+
+            userRepoContainer.style.minHeight = "56px";
+    
+            userRepos.className = "user-profile";
+    
+            userRepoLabel.innerHTML = repo.name;
+            userRepoValue.innerHTML = `${repo.description || 'No description available'}`;
+    
+            userRepoContainer.appendChild(userRepoLabel);
+            userRepoContainer.appendChild(userRepoValue);
+            userRepos.appendChild(userRepoContainer);
+    }
+
+    if (repos.length > 5 ) {
+        userRepos.style.maxHeight = "566px";
+    } else {
+        userRepos.style.maxHeight = "none";
+    }
+}
+
+// TODO: make current user profile disappear if new searched user doesn't exist and error is displayed
+//       make the list of repos equally fill the height of the profile-container/repos-container
+//       make the repo list scrollable if there are more than 5
+//       make error message for no repos available similar to user not found error
+
+// TEST IF ALL WORKING
+// #user-repos test flex: 1
