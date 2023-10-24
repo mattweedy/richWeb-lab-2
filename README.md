@@ -1,5 +1,5 @@
 # richWeb-lab-2
-repo: https://github.com/mattweedy/richWeb-lab3
+repo: https://github.com/mattweedy/richWeb-lab-2
 
 ## Problem 1
 Here's a preview of the first problem - Phone Directory
